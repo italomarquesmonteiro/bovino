@@ -71,21 +71,13 @@ df <- efetivo |>
 df_bovino <- municipios_br |>
   dplyr::left_join(df) |>
   dplyr::glimpse()
+```
 
-
+```{r}
 bovino_br <- df_bovino |>
-  dplyr::mutate(
-    cab_bovino = cut(quantidade_animais,
-      breaks = c(0, 500, 1000, 10000, 50000, 70000,
-            100000, 300000, 500000, 800000, 1200000),
-        labels = c("< 100", "100 - 1000", "1000 - 10000", "10000 - 50000",
-        "50000 - 100000", "100000 - 300000", "300000 - 500000",
-            "500000 - 800000", "800000 - 1000000", "1000000 - 1200000")
-        )
-  ) |>
     ggplot2::ggplot() +
-    geom_sf(aes(fill = factor(cab_bovino))) +
-    scale_fill_viridis_d() +
+    geom_sf(aes(fill = quantidade_animais)) +
+    viridis::scale_fill_viridis(discrete = FALSE) +
     theme(legend.position = c(0.25, 0.25),
     panel.grid.major = element_line(colour = "gray95"),
     panel.background = element_rect(fill = "gray95"),
@@ -124,23 +116,13 @@ ggsave(
 
 ```{r}
 bovino_rs <- df_bovino |>
-  dplyr::filter(
-    abbrev_state == "RS") |>
-  dplyr::mutate(
-    cab_bov_rs = cut(quantidade_animais,
-        breaks = c(0, 500, 1000, 5000, 10000, 50000,
-            100000, 300000, 550000, Inf),
-          labels = c("< 100", "100 - 10000", "10000 - 30000",
-            "30000 - 50000", "50000 - 100000", "100000 - 200000",
-                "200000 - 300000", "300000 - 360000", "550000 - 580000")
-          )
-        ) |>
+  dplyr::filter(abbrev_state == "RS") |>
   ggplot2::ggplot() +
   geom_sf(aes(
-    fill = factor(cab_bov_rs)
+    fill = quantidade_animais
     )
   ) +
-  scale_fill_viridis_d() +
+  viridis::scale_fill_viridis(discrete = FALSE) +
     theme(legend.position = c(0.2, 0.2),
     panel.grid.major = element_line(colour = "gray95"),
     panel.background = element_rect(fill = "gray95"),
